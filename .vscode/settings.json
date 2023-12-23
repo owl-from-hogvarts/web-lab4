@@ -1,0 +1,10 @@
+{
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "cSpell.words": [
+    "Intersector",
+    "Servlet"
+  ],
+  "java.eclipse.downloadSources": true,
+  "java.import.generatesMetadataFilesAtProjectRoot": true,
+  "java.maven.downloadSources": true
+}

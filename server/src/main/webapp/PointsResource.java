@@ -1,43 +1,39 @@
 package webapp;
 
-
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
-import com.fasterxml.jackson.databind.SerializationFeature;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import webapp.data.AreaData;
-import webapp.data.Point;
+import jakarta.annotation.Nullable;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import webapp.errors.InvalidValue;
 import webapp.errors.ParamNotFound;
 import webapp.errors.ParamValueNotProvided;
 
-// private servlet
-// should be inaccessible from outside
-@WebServlet(urlPatterns = "/WEB-INF/areaCheck")
-public class AreaCheckServlet extends HttpServlet {
+@Path("/points")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public class PointsResource {
   private static final String PARAM_POINT_X = "pointX";
   private static final String PARAM_POINT_Y = "pointY";
   private static final String PARAM_SCALE = "scale";
 
-  static String[] getRequiredParams() {
-    final String[] requiredParams = {PARAM_POINT_X, PARAM_POINT_Y, PARAM_SCALE};
-    return requiredParams;
-  }
-
   private static final Set<Double> ALLOWED_SCALE_VALUES = new HashSet<>();
   private static final double SCALE_TOLERANCE = 0.20d;
   private static final Intersector intersector = new Intersector();
+
+  @Inject
+  private PointsDAO points;
 
   static {
     ALLOWED_SCALE_VALUES.add(1.0d);
@@ -48,28 +44,31 @@ public class AreaCheckServlet extends HttpServlet {
 
   }
 
-  @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+  @GET
+  public Response getPoints() {
+    return Response.ok(points.getPoints()).build();
+  }
+
+  @POST
+  public Response addPointsWrapper(@QueryParam(PARAM_POINT_X) String paramPointX, @QueryParam(PARAM_POINT_X) String paramPointY,
+      @QueryParam(PARAM_POINT_X) String paramScale) throws IOException {
     try {
-      processGet(req, resp);
+      return addPoints(paramPointX, paramPointY, paramScale);
     } catch (Exception e) {
-      resp.setStatus(501);
-      PointsHelper.objectMapper.writer().writeValue(resp.getWriter(), e);
+      return Response.status(501).entity(e).build();
     }
   }
 
-  private void processGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ParamNotFound, ParamValueNotProvided, InvalidValue {
-    final var params = req.getParameterMap();
-
+  private Response addPoints(String paramPointX, String paramPointY, String paramScale) throws IOException, ParamNotFound, ParamValueNotProvided, InvalidValue {
     final var start = Instant.now();
 
-    final String strPointX = getParamFirstSafe(params, PARAM_POINT_X);
-    final String strPointY = getParamFirstSafe(params, PARAM_POINT_Y);
-    final String strScale = getParamFirstSafe(params, PARAM_SCALE);
-    
+    final String strPointX = requiredParam(PARAM_POINT_X, paramPointX);
+    final String strPointY = requiredParam(PARAM_POINT_Y, paramPointY);
+    final String strScale = requiredParam(PARAM_SCALE, paramScale);
+
     // validate params in numeric form (checks for ranges)
     final double pointX = parseDoubleParam(PARAM_POINT_X, strPointX);
-    checkRange(PARAM_POINT_X, -3, pointX, 3);
+    checkRange(PARAM_POINT_X, -5, pointX, 5);
     final double pointY = parseDoubleParam(PARAM_POINT_Y, strPointY);
     checkRange(PARAM_POINT_Y, -5, pointY, 5);
     final double scaleApproximate = parseDoubleParam(PARAM_SCALE, strScale);
@@ -81,49 +80,20 @@ public class AreaCheckServlet extends HttpServlet {
 
     final var end = Instant.now();
     final var duration = Duration.between(end, start);
-    // store results into bean
-    final var session = req.getSession(true);
-    final var userData = PointsHelper.getPointsSafe(session);
 
-    final var areaData = new AreaData();
+    final var areaData = new PointCheckResult();
     areaData.setPoint(point);
     areaData.setCalculatedAt(Instant.now());
     areaData.setCalculationTime(duration.getNano() / 1_000_000);
-    areaData.setResult(isIntersects);
-    userData.getAreaDataList().add(areaData);
-  }
-
-  private static String[] getParamSafe(Map<String, String[]> params, String paramName) throws ParamNotFound {
-    if (!params.containsKey(paramName)) {
-      throw new ParamNotFound(paramName);
-    }
-
-    return params.get(paramName);
-  }
-
-  private static String getParamFirstSafe(Map<String, String[]> params, String paramName) throws ParamNotFound, ParamValueNotProvided {
-    final var values = getParamSafe(params, paramName);
-    final var first = getFirst(values);
-
-    if (first.isEmpty()) {
-      throw new ParamValueNotProvided(paramName);
-    }
-
-    return first.get();
-  }
-
-  private static Optional<String> getFirst(String[] values){
-    final int FIRST_ELEMENT = 0;
-    if (values.length < 1) {
-      return Optional.empty();
-    }
-
-    return Optional.of(values[FIRST_ELEMENT]);
+    areaData.setIntersects(isIntersects);
+    points.save(areaData);
+    
+    return Response.ok().build();
   }
 
   private static void validateNumericString(String param, String numericString) throws InvalidValue {
     final int MAX_STRING_LENGTH = 13;
-    
+
     if (numericString.length() < 1) {
       throw new InvalidValue(param, "Empty string provided! Excepted non empty string!");
     }
@@ -131,6 +101,14 @@ public class AreaCheckServlet extends HttpServlet {
     if (numericString.length() > MAX_STRING_LENGTH) {
       throw new InvalidValue(param, "Max allowed length is " + MAX_STRING_LENGTH + ". Got: " + numericString.length());
     }
+  }
+
+  private static String requiredParam(String paramName, @Nullable String paramValue) throws ParamNotFound {
+    if (paramValue == null || paramValue.isEmpty()) {
+      throw new ParamNotFound(paramName);
+    }
+
+    return paramValue;
   }
 
   private static double parseDoubleParam(String paramName, String value) throws InvalidValue {
@@ -146,22 +124,25 @@ public class AreaCheckServlet extends HttpServlet {
 
   /**
    * Checks both side inclusive
+   * 
    * @throws InvalidValue
    */
   private static void checkRange(String paramName, double lower, double value, double upper) throws InvalidValue {
     if (!(lower <= value && value <= upper)) {
-      throw new InvalidValue(paramName, "Value not within range: should be higher or equal to " + lower + " and lower or equal to " + upper + ". Got " + value);
+      throw new InvalidValue(paramName, "Value not within range: should be higher or equal to " + lower
+          + " and lower or equal to " + upper + ". Got " + value);
     }
   }
 
-  private static double getInSet(String paramName, double value, Set<Double> set, double tolerance) throws InvalidValue {
+  private static double getInSet(String paramName, double value, Set<Double> set, double tolerance)
+      throws InvalidValue {
     tolerance = Math.abs(tolerance);
 
     for (final double target : set) {
       if (((target - tolerance) <= value && value <= (target + tolerance))) {
         return target;
       }
-    } 
+    }
 
     throw new InvalidValue(paramName, "Value " + value + " is not in set!");
   }

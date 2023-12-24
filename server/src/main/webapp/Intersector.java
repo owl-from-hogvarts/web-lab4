@@ -1,7 +1,5 @@
 package webapp;
 
-import webapp.data.Point;
-
 public class Intersector {
 
   public boolean intersect(Point point) {

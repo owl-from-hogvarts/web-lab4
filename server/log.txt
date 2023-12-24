@@ -1,0 +1,190 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------< net.whitehorizont.web.server:lab2 >------------------
+[INFO] Building lab2 Maven Webapp 0.0.1
+[INFO] --------------------------------[ war ]---------------------------------
+[WARNING] The artifact org.hibernate:hibernate-core:jar:6.1.7.Final has been relocated to org.hibernate.orm:hibernate-core:jar:6.1.7.Final
+[INFO] 
+[INFO] --- wildfly-maven-plugin:4.2.0.Final:dev (default-cli) @ lab2 ---
+[INFO] A server already exists in /home/owl-notebook/programming/projects/university/web/lab4/server/target/server, provisioning for net.whitehorizont.web.server:lab2
+[INFO] JBoss Threads version 2.4.0.Final
+[INFO] JBoss Remoting version 5.0.27.Final
+[INFO] XNIO version 3.8.9.Final
+[INFO] XNIO NIO Implementation Version 3.8.9.Final
+[INFO] ELY00001: WildFly Elytron version 2.2.1.Final
+[INFO] JAVA_HOME : /usr/lib/jvm/java-17-openjdk
+[INFO] JBOSS_HOME: /home/owl-notebook/programming/projects/university/web/lab4/server/target/server
+[INFO] JAVA_OPTS : -Xms64m -Xmx512m -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -Djboss.modules.system.pkgs=org.jboss.byteman --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-exports=jdk.unsupported/sun.reflect=ALL-UNNAMED --add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED --add-modules=java.se
+[INFO] STANDALONE server is starting up.
+[0m17:55:22,421 INFO  [org.jboss.modules] (main) JBoss Modules version 2.1.2.Final
+[0m[0m17:55:22,717 INFO  [org.jboss.msc] (main) JBoss MSC version 1.5.2.Final
+[0m[0m17:55:22,722 INFO  [org.jboss.threads] (main) JBoss Threads version 2.4.0.Final
+[0m[0m17:55:22,781 INFO  [org.jboss.as] (MSC service thread 1-2) WFLYSRV0049: WildFly Full 30.0.1.Final (WildFly Core 22.0.2.Final) starting
+[0m[0m17:55:23,149 INFO  [org.wildfly.security] (ServerService Thread Pool -- 20) ELY00001: WildFly Elytron version 2.2.2.Final
+[0m[0m17:55:23,475 INFO  [org.jboss.as.controller.management-deprecated] (ServerService Thread Pool -- 10) WFLYCTL0028: Attribute 'cluster' in the resource at address '/subsystem=ejb3/service=remote' is deprecated, and may be removed in a future version. See the attribute description in the output of the read-resource-description operation to learn more about the deprecation.
+[0m[0m17:55:23,527 INFO  [org.jboss.as.server] (Controller Boot Thread) WFLYSRV0039: Creating http management service using socket-binding (management-http)
+[0m[0m17:55:23,536 INFO  [org.xnio] (MSC service thread 1-6) XNIO version 3.8.11.Final
+[0m[0m17:55:23,540 INFO  [org.xnio.nio] (MSC service thread 1-6) XNIO NIO Implementation Version 3.8.11.Final
+[0m[0m17:55:23,559 INFO  [org.wildfly.extension.elytron.oidc._private] (ServerService Thread Pool -- 53) WFLYOIDC0001: Activating WildFly Elytron OIDC Subsystem
+[0m[0m17:55:23,563 INFO  [org.jboss.as.jaxrs] (ServerService Thread Pool -- 57) WFLYRS0016: RESTEasy version 6.2.6.Final
+[0m[0m17:55:23,563 INFO  [org.jboss.as.clustering.infinispan] (ServerService Thread Pool -- 55) WFLYCLINF0001: Activating Infinispan subsystem.
+[0m[0m17:55:23,563 INFO  [org.wildfly.extension.health] (ServerService Thread Pool -- 54) WFLYHEALTH0001: Activating Base Health Subsystem
+[0m[0m17:55:23,569 INFO  [org.wildfly.extension.microprofile.config.smallrye] (ServerService Thread Pool -- 65) WFLYCONF0001: Activating MicroProfile Config Subsystem
+[0m[0m17:55:23,573 INFO  [org.wildfly.extension.io] (ServerService Thread Pool -- 56) WFLYIO001: Worker 'default' has auto-configured to 16 IO threads with 128 max task threads based on your 8 available processors
+[0m[0m17:55:23,574 INFO  [org.wildfly.extension.microprofile.jwt.smallrye] (ServerService Thread Pool -- 66) WFLYJWT0001: Activating MicroProfile JWT Subsystem
+[0m[0m17:55:23,576 INFO  [org.jboss.as.naming] (ServerService Thread Pool -- 67) WFLYNAM0001: Activating Naming Subsystem
+[0m[0m17:55:23,577 INFO  [org.jboss.as.jsf] (ServerService Thread Pool -- 62) WFLYJSF0007: Activated the following Jakarta Server Faces Implementations: [main]
+[0m[0m17:55:23,576 INFO  [org.wildfly.extension.metrics] (ServerService Thread Pool -- 64) WFLYMETRICS0001: Activating Base Metrics Subsystem
+[0m[0m17:55:23,582 INFO  [org.jboss.as.connector] (MSC service thread 1-7) WFLYJCA0009: Starting Jakarta Connectors Subsystem (WildFly/IronJacamar 3.0.4.Final)
+[0m[0m17:55:23,608 INFO  [org.jboss.remoting] (MSC service thread 1-3) JBoss Remoting version 5.0.27.Final
+[0m[33m17:55:23,611 WARN  [org.jboss.as.txn] (ServerService Thread Pool -- 74) WFLYTX0013: The node-identifier attribute on the /subsystem=transactions is set to the default value. This is a danger for environments running multiple servers. Please make sure the attribute value is unique.
+[0m[0m17:55:23,615 INFO  [org.jboss.as.connector.subsystems.datasources] (ServerService Thread Pool -- 44) WFLYJCA0004: Deploying JDBC-compliant driver class org.h2.Driver (version 2.2)
+[0m[0m17:55:23,622 INFO  [org.jboss.as.naming] (MSC service thread 1-1) WFLYNAM0003: Starting Naming Service
+[0m[0m17:55:23,623 INFO  [org.jboss.as.mail.extension] (MSC service thread 1-1) WFLYMAIL0001: Bound mail session [java:jboss/mail/Default]
+[0m[0m17:55:23,623 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-5) WFLYJCA0018: Started Driver service with driver-name = h2
+[0m[0m17:55:23,625 INFO  [org.jboss.as.webservices] (ServerService Thread Pool -- 76) WFLYWS0002: Activating WebServices Extension
+[0m[33m17:55:23,648 WARN  [org.wildfly.extension.elytron] (MSC service thread 1-4) WFLYELY00023: KeyStore file '/home/owl-notebook/programming/projects/university/web/lab4/server/target/server/standalone/configuration/application.keystore' does not exist. Used blank.
+[0m[0m17:55:23,650 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-1) WFLYUT0003: Undertow 2.3.10.Final starting
+[0m[33m17:55:23,684 WARN  [org.wildfly.extension.elytron] (MSC service thread 1-3) WFLYELY01084: KeyStore /home/owl-notebook/programming/projects/university/web/lab4/server/target/server/standalone/configuration/application.keystore not found, it will be auto-generated on first use with a self-signed certificate for host localhost
+[0m[0m17:55:23,698 INFO  [org.jboss.as.ejb3] (MSC service thread 1-6) WFLYEJB0481: Strict pool slsb-strict-max-pool is using a max instance size of 128 (per class), which is derived from thread worker pool sizing.
+[0m[0m17:55:23,701 INFO  [org.jboss.as.ejb3] (MSC service thread 1-4) WFLYEJB0482: Strict pool mdb-strict-max-pool is using a max instance size of 32 (per class), which is derived from the number of CPUs on this host.
+[0m[0m17:55:23,743 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 75) WFLYUT0014: Creating file handler for path '/home/owl-notebook/programming/projects/university/web/lab4/server/target/server/welcome-content' with options [directory-listing: 'false', follow-symlink: 'false', case-sensitive: 'true', safe-symlink-paths: '[]']
+[0m[0m17:55:23,748 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-1) WFLYUT0012: Started server default-server.
+[0m[0m17:55:23,751 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-6) Queuing requests.
+[0m[0m17:55:23,752 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-6) WFLYUT0018: Host default-host starting
+[0m[0m17:55:23,804 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-6) WFLYUT0006: Undertow HTTP listener default listening on 127.0.0.1:17025
+[0m[0m17:55:23,835 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-6) WFLYUT0006: Undertow HTTPS listener https listening on 127.0.0.1:8443
+[0m[0m17:55:23,838 INFO  [org.jboss.as.ejb3] (MSC service thread 1-1) WFLYEJB0493: Jakarta Enterprise Beans subsystem suspension complete
+[0m[0m17:55:23,865 INFO  [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-7) WFLYJCA0001: Bound data source [java:jboss/datasources/ExampleDS]
+[0m[0m17:55:23,870 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-2) WFLYSRV0027: Starting deployment of "lab2.war" (runtime-name: "lab2.war")
+[0m[0m17:55:23,874 INFO  [org.jboss.as.server.deployment.scanner] (MSC service thread 1-3) WFLYDS0013: Started FileSystemDeploymentService for directory /home/owl-notebook/programming/projects/university/web/lab4/server/target/server/standalone/deployments
+[0m[0m17:55:23,926 INFO  [org.jboss.ws.common.management] (MSC service thread 1-2) JBWS022052: Starting JBossWS 7.0.0.Final (Apache CXF 4.0.0) 
+[0m[0m17:55:25,550 INFO  [org.jboss.as.jpa] (MSC service thread 1-2) WFLYJPA0002: Read persistence.xml for default
+[0m[0m17:55:25,656 INFO  [org.jipijapa] (MSC service thread 1-4) JIPIORMV6020260: Second level cache enabled for lab2#default
+[0m[0m17:55:25,731 INFO  [org.jboss.weld.deployer] (MSC service thread 1-5) WFLYWELD0003: Processing weld deployment lab2.war
+[0m[0m17:55:25,800 INFO  [org.hibernate.validator.internal.util.Version] (MSC service thread 1-5) HV000001: Hibernate Validator 8.0.1.Final
+[0m[0m17:55:25,878 INFO  [org.jboss.as.ejb3.deployment] (MSC service thread 1-5) WFLYEJB0473: JNDI bindings for session bean named 'PointCheckResult' in deployment unit 'deployment "lab2.war"' are as follows:
+
+	java:global/lab2/PointCheckResult!webapp.PointCheckResult
+	java:app/lab2/PointCheckResult!webapp.PointCheckResult
+	java:module/PointCheckResult!webapp.PointCheckResult
+	java:global/lab2/PointCheckResult
+	java:app/lab2/PointCheckResult
+	java:module/PointCheckResult
+
+[0m[0m17:55:25,878 INFO  [org.jboss.as.ejb3.deployment] (MSC service thread 1-5) WFLYEJB0473: JNDI bindings for session bean named 'PointsDAO' in deployment unit 'deployment "lab2.war"' are as follows:
+
+	java:global/lab2/PointsDAO!webapp.PointsDAO
+	java:app/lab2/PointsDAO!webapp.PointsDAO
+	java:module/PointsDAO!webapp.PointsDAO
+	java:global/lab2/PointsDAO
+	java:app/lab2/PointsDAO
+	java:module/PointsDAO
+
+[0m[0m17:55:25,986 INFO  [org.infinispan.CONTAINER] (ServerService Thread Pool -- 78) ISPN000556: Starting user marshaller 'org.wildfly.clustering.infinispan.marshalling.jboss.JBossMarshaller'
+[0m[0m17:55:26,054 INFO  [org.jipijapa] (MSC service thread 1-1) JIPIORMV6020260: Second level cache enabled for lab2#default
+[0m[33m17:55:26,078 WARN  [org.jboss.as.jaxrs] (MSC service thread 1-1) WFLYRS0018: Explicit usage of Jackson annotation in a Jakarta RESTful Web Services deployment; the system will disable Jakarta JSON Binding processing for the current deployment. Consider setting the 'resteasy.preferJacksonOverJsonB' property to 'false' to restore Jakarta JSON Binding.
+[0m[0m17:55:26,082 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-1) WFLYJCA0005: Deploying non-JDBC-compliant driver class org.postgresql.Driver (version 42.5)
+[0m[0m17:55:26,101 INFO  [org.jboss.weld.Version] (MSC service thread 1-1) WELD-000900: 5.1.2 (Final)
+[0m[0m17:55:26,147 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-8) WFLYJCA0018: Started Driver service with driver-name = lab2.war_org.postgresql.Driver_42_5
+[0m[0m17:55:26,311 INFO  [org.jboss.as.jpa] (ServerService Thread Pool -- 78) WFLYJPA0010: Starting Persistence Unit (phase 1 of 2) Service 'lab2#default'
+[0m[0m17:55:26,325 INFO  [org.hibernate.jpa.internal.util.LogHelper] (ServerService Thread Pool -- 78) HHH000204: Processing PersistenceUnitInfo [name: default]
+[0m[0m17:55:26,372 INFO  [org.hibernate.Version] (ServerService Thread Pool -- 78) HHH000412: Hibernate ORM core version 6.2.13.Final
+[0m[0m17:55:26,375 INFO  [org.hibernate.cfg.Environment] (ServerService Thread Pool -- 78) HHH000406: Using bytecode reflection optimizer
+[0m[0m17:55:26,705 INFO  [org.hibernate.envers.boot.internal.EnversServiceImpl] (ServerService Thread Pool -- 78) Envers integration enabled? : true
+[0m[0m17:55:26,811 INFO  [org.jboss.as.jpa] (ServerService Thread Pool -- 78) WFLYJPA0010: Starting Persistence Unit (phase 2 of 2) Service 'lab2#default'
+[0m[0m17:55:27,454 INFO  [stdout] (ServerService Thread Pool -- 78) Hibernate: 
+[0m[0m17:55:27,454 INFO  [stdout] (ServerService Thread Pool -- 78)     create table PointCheckResult (
+[0m[0m17:55:27,454 INFO  [stdout] (ServerService Thread Pool -- 78)         id uuid not null,
+[0m[0m17:55:27,454 INFO  [stdout] (ServerService Thread Pool -- 78)         calculatedAt timestamp(6) with time zone not null,
+[0m[0m17:55:27,454 INFO  [stdout] (ServerService Thread Pool -- 78)         calculationTime bigint not null,
+[0m[0m17:55:27,454 INFO  [stdout] (ServerService Thread Pool -- 78)         isIntersects boolean not null,
+[0m[0m17:55:27,454 INFO  [stdout] (ServerService Thread Pool -- 78)         pointX float(53) not null,
+[0m[0m17:55:27,454 INFO  [stdout] (ServerService Thread Pool -- 78)         pointY float(53) not null,
+[0m[0m17:55:27,454 INFO  [stdout] (ServerService Thread Pool -- 78)         scale float(53) not null,
+[0m[0m17:55:27,454 INFO  [stdout] (ServerService Thread Pool -- 78)         primary key (id)
+[0m[0m17:55:27,454 INFO  [stdout] (ServerService Thread Pool -- 78)     )
+[0m[0m17:55:28,027 INFO  [org.jboss.resteasy.resteasy_jaxrs.i18n] (ServerService Thread Pool -- 80) RESTEASY002225: Deploying jakarta.ws.rs.core.Application: class webapp.IntersectorApplication
+[0m[0m17:55:28,069 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 80) WFLYUT0021: Registered web context: '/' for server 'default-server'
+[0m[0m17:55:28,117 INFO  [org.jboss.as.server] (Controller Boot Thread) WFLYSRV0010: Deployed "lab2.war" (runtime-name : "lab2.war")
+[0m[0m17:55:28,145 INFO  [org.jboss.as.server] (Controller Boot Thread) WFLYSRV0212: Resuming server
+[0m[0m17:55:28,148 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0060: Http management interface listening on http://127.0.0.1:9990/management
+[0m[0m17:55:28,148 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0051: Admin console listening on http://127.0.0.1:9990
+[0m[0m17:55:28,150 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0025: WildFly Full 30.0.1.Final (WildFly Core 22.0.2.Final) started in 5897ms - Started 447 of 647 services (322 services are lazy, passive or on-demand) - Server configuration file in use: standalone.xml
+[0m[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 2 resources
+[INFO] Nothing to compile - all classes are up to date
+[INFO] Exploding webapp
+[INFO] Assembling webapp [lab2] in [/home/owl-notebook/programming/projects/university/web/lab4/server/target/lab2]
+[INFO] Processing war project
+[INFO] Copying webapp resources [/home/owl-notebook/programming/projects/university/web/lab4/server/src/main/webapp]
+[INFO] Webapp assembled in [37 msecs]
+[0m17:55:28,717 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-2) WFLYJCA0019: Stopped Driver service with driver-name = lab2.war_org.postgresql.Driver_42_5
+[0m[0m17:55:28,725 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 80) WFLYUT0022: Unregistered web context: '/' from server 'default-server'
+[0m[0m17:55:28,746 INFO  [org.jboss.as.jpa] (ServerService Thread Pool -- 4) WFLYJPA0011: Stopping Persistence Unit (phase 2 of 2) Service 'lab2#default'
+[0m[0m17:55:28,748 INFO  [org.hibernate.orm.beans] (ServerService Thread Pool -- 4) HHH10005004: Stopping BeanContainer : org.hibernate.resource.beans.container.internal.CdiBeanContainerExtendedAccessImpl@4380e47
+[0m[0m17:55:28,750 INFO  [org.jboss.as.jpa] (ServerService Thread Pool -- 4) WFLYJPA0011: Stopping Persistence Unit (phase 1 of 2) Service 'lab2#default'
+[0m[0m17:55:28,763 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-3) WFLYSRV0028: Stopped deployment lab2.war (runtime-name: lab2.war) in 47ms
+[0m[0m17:55:28,766 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-4) WFLYSRV0027: Starting deployment of "lab2.war" (runtime-name: "lab2.war")
+[0m[0m17:55:29,823 INFO  [org.jboss.as.jpa] (MSC service thread 1-8) WFLYJPA0002: Read persistence.xml for default
+[0m[0m17:55:29,855 INFO  [org.jipijapa] (MSC service thread 1-3) JIPIORMV6020260: Second level cache enabled for lab2#default
+[0m[0m17:55:29,858 INFO  [org.jboss.weld.deployer] (MSC service thread 1-2) WFLYWELD0003: Processing weld deployment lab2.war
+[0m[0m17:55:29,870 INFO  [org.infinispan.CONTAINER] (ServerService Thread Pool -- 4) ISPN000556: Starting user marshaller 'org.wildfly.clustering.infinispan.marshalling.jboss.JBossMarshaller'
+[0m[0m17:55:29,880 INFO  [org.jboss.as.ejb3.deployment] (MSC service thread 1-2) WFLYEJB0473: JNDI bindings for session bean named 'PointCheckResult' in deployment unit 'deployment "lab2.war"' are as follows:
+
+	java:global/lab2/PointCheckResult!webapp.PointCheckResult
+	java:app/lab2/PointCheckResult!webapp.PointCheckResult
+	java:module/PointCheckResult!webapp.PointCheckResult
+	java:global/lab2/PointCheckResult
+	java:app/lab2/PointCheckResult
+	java:module/PointCheckResult
+
+[0m[0m17:55:29,881 INFO  [org.jboss.as.ejb3.deployment] (MSC service thread 1-2) WFLYEJB0473: JNDI bindings for session bean named 'PointsDAO' in deployment unit 'deployment "lab2.war"' are as follows:
+
+	java:global/lab2/PointsDAO!webapp.PointsDAO
+	java:app/lab2/PointsDAO!webapp.PointsDAO
+	java:module/PointsDAO!webapp.PointsDAO
+	java:global/lab2/PointsDAO
+	java:app/lab2/PointsDAO
+	java:module/PointsDAO
+
+[0m[0m17:55:29,898 INFO  [org.jboss.as.jpa] (ServerService Thread Pool -- 4) WFLYJPA0010: Starting Persistence Unit (phase 1 of 2) Service 'lab2#default'
+[0m[0m17:55:29,898 INFO  [org.hibernate.jpa.internal.util.LogHelper] (ServerService Thread Pool -- 4) HHH000204: Processing PersistenceUnitInfo [name: default]
+[0m[0m17:55:29,911 INFO  [org.hibernate.envers.boot.internal.EnversServiceImpl] (ServerService Thread Pool -- 4) Envers integration enabled? : true
+[0m[0m17:55:29,920 INFO  [org.jipijapa] (MSC service thread 1-5) JIPIORMV6020260: Second level cache enabled for lab2#default
+[0m[33m17:55:29,922 WARN  [org.jboss.as.jaxrs] (MSC service thread 1-5) WFLYRS0018: Explicit usage of Jackson annotation in a Jakarta RESTful Web Services deployment; the system will disable Jakarta JSON Binding processing for the current deployment. Consider setting the 'resteasy.preferJacksonOverJsonB' property to 'false' to restore Jakarta JSON Binding.
+[0m[0m17:55:29,925 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-5) WFLYJCA0005: Deploying non-JDBC-compliant driver class org.postgresql.Driver (version 42.5)
+[0m[0m17:55:29,947 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-3) WFLYJCA0018: Started Driver service with driver-name = lab2.war_org.postgresql.Driver_42_5
+[0m[0m17:55:29,952 INFO  [org.jboss.as.jpa] (ServerService Thread Pool -- 4) WFLYJPA0010: Starting Persistence Unit (phase 2 of 2) Service 'lab2#default'
+[0m[0m17:55:30,256 INFO  [org.jboss.resteasy.resteasy_jaxrs.i18n] (ServerService Thread Pool -- 80) RESTEASY002225: Deploying jakarta.ws.rs.core.Application: class webapp.IntersectorApplication
+[0m[0m17:55:30,268 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 80) WFLYUT0021: Registered web context: '/' for server 'default-server'
+[0m[0m17:55:30,324 INFO  [org.jboss.as.server] (management-handler-thread - 1) WFLYSRV0016: Replaced deployment "lab2.war" with deployment "lab2.war"
+[0m[0m17:56:01,507 INFO  [stdout] (default task-1) null
+[0m[0m17:56:01,511 INFO  [stdout] (default task-1) PointCheckResult [id=fbd981b8-ee35-4b48-9c38-39d1dadc966f, pointX=1.0, pointY=1.0, scale=1.0, isIntersects=false, calculationTime=999, calculatedAt=2023-12-24T14:56:01.455177646Z]
+[0m[0m17:56:01,530 INFO  [stdout] (default task-1) Hibernate: 
+[0m[0m17:56:01,530 INFO  [stdout] (default task-1)     insert 
+[0m[0m17:56:01,530 INFO  [stdout] (default task-1)     into
+[0m[0m17:56:01,530 INFO  [stdout] (default task-1)         PointCheckResult
+[0m[0m17:56:01,530 INFO  [stdout] (default task-1)         (calculatedAt,calculationTime,isIntersects,pointX,pointY,scale,id) 
+[0m[0m17:56:01,530 INFO  [stdout] (default task-1)     values
+[0m[0m17:56:01,530 INFO  [stdout] (default task-1)         (?,?,?,?,?,?,?)
+[0m[0m17:56:19,209 INFO  [org.jboss.as.server] (Thread-1) WFLYSRV0272: Suspending server
+[0m[0m17:56:19,211 INFO  [org.jboss.as.ejb3] (Thread-1) WFLYEJB0493: Jakarta Enterprise Beans subsystem suspension complete
+[0m[0m17:56:19,214 INFO  [org.jboss.as.server] (Thread-1) WFLYSRV0220: Server shutdown has been requested via an OS signal
+[0m[0m17:56:19,218 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-1) WFLYJCA0019: Stopped Driver service with driver-name = lab2.war_org.postgresql.Driver_42_5
+[0m[0m17:56:19,221 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 84) WFLYUT0022: Unregistered web context: '/' from server 'default-server'
+[0m[0m17:56:19,221 INFO  [org.jboss.as.mail.extension] (MSC service thread 1-2) WFLYMAIL0002: Unbound mail session [java:jboss/mail/Default]
+[0m[0m17:56:19,230 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-3) WFLYUT0019: Host default-host stopping
+[0m[0m17:56:19,235 INFO  [org.jboss.as.jpa] (ServerService Thread Pool -- 87) WFLYJPA0011: Stopping Persistence Unit (phase 2 of 2) Service 'lab2#default'
+[0m[0m17:56:19,235 INFO  [org.hibernate.orm.beans] (ServerService Thread Pool -- 87) HHH10005004: Stopping BeanContainer : org.hibernate.resource.beans.container.internal.CdiBeanContainerExtendedAccessImpl@79e0e931
+[0m[0m17:56:19,236 INFO  [org.jboss.as.jpa] (ServerService Thread Pool -- 87) WFLYJPA0011: Stopping Persistence Unit (phase 1 of 2) Service 'lab2#default'
+[0m[0m17:56:19,237 INFO  [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-2) WFLYJCA0010: Unbound data source [java:jboss/datasources/ExampleDS]
+[0m[0m17:56:19,239 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-5) WFLYJCA0019: Stopped Driver service with driver-name = h2
+[0m[0m17:56:19,244 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-7) WFLYUT0008: Undertow HTTPS listener https suspending
+[0m[0m17:56:19,244 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-3) WFLYUT0008: Undertow HTTP listener default suspending
+[0m[0m17:56:19,245 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-3) WFLYUT0007: Undertow HTTP listener default stopped, was bound to 127.0.0.1:17025
+[0m[0m17:56:19,245 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-7) WFLYUT0007: Undertow HTTPS listener https stopped, was bound to 127.0.0.1:8443
+[0m[0m17:56:19,245 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-1) WFLYSRV0028: Stopped deployment lab2.war (runtime-name: lab2.war) in 26ms
+[0m[0m17:56:19,245 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-3) WFLYUT0004: Undertow 2.3.10.Final stopping
+[0m[0m17:56:19,249 INFO  [org.jboss.as] (MSC service thread 1-7) WFLYSRV0050: WildFly Full 30.0.1.Final (WildFly Core 22.0.2.Final) stopped in 30ms
+[0m

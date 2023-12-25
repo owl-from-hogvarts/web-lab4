@@ -38,9 +38,9 @@ public class PointCheckResult implements Serializable {
     @NotNull
     private long calculationTime;
 
-    // @NotNull
-    // @Temporal(TemporalType.TIMESTAMP)
-    // @JsonFormat(shape = JsonFormat.Shape.NUMBER, without = JsonFormat.Feature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS)
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER, without = JsonFormat.Feature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS)
     private Instant calculatedAt;
 
     public PointCheckResult() {

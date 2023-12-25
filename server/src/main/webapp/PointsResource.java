@@ -21,7 +21,7 @@ import webapp.errors.ParamNotFound;
 import webapp.errors.ParamValueNotProvided;
 
 @Path("/points")
-@Consumes(MediaType.APPLICATION_JSON)
+@ProtectedEndpoint
 @Produces(MediaType.APPLICATION_JSON)
 public class PointsResource {
   private static final String PARAM_POINT_X = "pointX";
@@ -50,8 +50,8 @@ public class PointsResource {
   }
 
   @POST
-  public Response addPointsWrapper(@QueryParam(PARAM_POINT_X) String paramPointX, @QueryParam(PARAM_POINT_X) String paramPointY,
-      @QueryParam(PARAM_POINT_X) String paramScale) throws IOException {
+  public Response addPointsWrapper(@QueryParam(PARAM_POINT_X) String paramPointX, @QueryParam(PARAM_POINT_Y) String paramPointY,
+      @QueryParam(PARAM_SCALE) String paramScale) throws IOException {
     try {
       return addPoints(paramPointX, paramPointY, paramScale);
     } catch (Exception e) {
@@ -60,7 +60,7 @@ public class PointsResource {
   }
 
   private Response addPoints(String paramPointX, String paramPointY, String paramScale) throws IOException, ParamNotFound, ParamValueNotProvided, InvalidValue {
-    final var start = Instant.now();
+    final var start = System.nanoTime();
 
     final String strPointX = requiredParam(PARAM_POINT_X, paramPointX);
     final String strPointY = requiredParam(PARAM_POINT_Y, paramPointY);
@@ -78,13 +78,13 @@ public class PointsResource {
     final var point = new Point(pointX, pointY, scale);
     final boolean isIntersects = intersector.intersect(point);
 
-    final var end = Instant.now();
-    final var duration = Duration.between(end, start);
+    final var end = System.nanoTime();
+    final var duration = end - start;
 
     final var areaData = new PointCheckResult();
     areaData.setPoint(point);
     areaData.setCalculatedAt(Instant.now());
-    areaData.setCalculationTime(duration.getNano() / 1_000_000);
+    areaData.setCalculationTime(duration / 1_000);
     areaData.setIntersects(isIntersects);
     points.save(areaData);
     

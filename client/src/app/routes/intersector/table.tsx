@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
+import { PointCheckResult } from "app/api/point";
 import { colors } from "app/styles/colors";
-import { AreaCheckResult } from "old/display-points";
 import React from "react";
 
 export type PointsTableProps = {
-  points: AreaCheckResult[];
+  points: PointCheckResult[];
 };
 
 const ResultsTable = styled.table`
@@ -63,18 +63,18 @@ export default function PointsTable({ points }: PointsTableProps) {
 }
 
 type RowProps = {
-  point: AreaCheckResult;
+  point: PointCheckResult;
 };
 
 function Row({
-  point: { point, calculatedAt, calculationTime, result },
-}: RowProps) {
+  point: { pointX, pointY, scale, calculatedAt, calculationTime, isIntersects },
+}: RowProps) {  
   return (
     <tr>
-      <td>{point.x}</td>
-      <td>{point.y}</td>
-      <td>{point.scale}</td>
-      <td>{formatResult(result)}</td>
+      <td>{pointX}</td>
+      <td>{pointY}</td>
+      <td>{scale}</td>
+      <td>{formatResult(isIntersects)}</td>
       <td>{formatCalculatedAt(calculatedAt)}</td>
       <td>{calculationTime}</td>
     </tr>

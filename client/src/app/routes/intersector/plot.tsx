@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from "react";
-import PlotPainter from "old/draw";
-import { AreaCheckResult } from "old/display-points";
+import PlotPainter from "utils/draw";
 import styled from "@emotion/styled";
-import { TPoint } from "./intersector-form";
+import { PointCheckResult, TPoint } from "app/api/point";
 
 const StyledPlot = styled.canvas`
   display: flex;
@@ -11,7 +10,7 @@ const StyledPlot = styled.canvas`
 `;
 
 export interface PlotProps {
-  points: Pick<AreaCheckResult, "point" | "result">[];
+  points: Pick<PointCheckResult, "pointX" | "pointY" | "scale" | "isIntersects">[];
   onPointAdd?: (point: TPoint) => void,
   scale: number
 }
@@ -22,9 +21,10 @@ export default function Plot({ points, onPointAdd = () => {}, scale }: PlotProps
   useEffect(() => {
     if (!plot.current) return;
     const painter = new PlotPainter(plot.current);
+    painter.reDraw()
 
-    for (const { point, result } of points) {
-      painter.drawPoint(point, result);
+    for (const { pointX, pointY, scale, isIntersects: result } of points) {
+      painter.drawPoint({pointX, pointY, scale}, result);
     }
   }, [points]);
 

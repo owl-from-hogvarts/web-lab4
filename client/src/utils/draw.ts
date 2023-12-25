@@ -1,4 +1,4 @@
-import { TPoint, TScaledPoint } from "app/routes/intersector/intersector-form";
+import { TScaledPoint } from "app/api/point";
 
 export type Position = { x: number; y: number };
 type UnitMark = Position & { label: string; isHorizontal: boolean };
@@ -37,8 +37,6 @@ export default class PlotPainter {
   constructor(canvas: HTMLCanvasElement) {
     this.#canvas = canvas
     this.#context = canvas.getContext("2d")!;
-
-    this.reDraw()
   }
 
   reDraw() {

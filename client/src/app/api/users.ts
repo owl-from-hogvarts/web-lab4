@@ -7,18 +7,17 @@ export type TLoginData = {
 }
 
 type TLoginUserResponse = {
-  token: string
+  UUID: string
 }
 
 export async function loginUser(data: TLoginData): Promise<string> {
   const response = await api.get<TLoginUserResponse>("/users", {
     params: data
   })
-  const { token } = response.data
+  const { UUID } = response.data
+  setUserToken(UUID)
 
-  setUserToken(token)
-
-  return token
+  return UUID
 }
 
 

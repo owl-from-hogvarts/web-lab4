@@ -1,6 +1,5 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { useIsAuthorized } from "app/hooks/user";
 import { colors } from "app/styles/colors";
 import { fantasyFontName } from "app/styles/fonts";
 import React from "react";

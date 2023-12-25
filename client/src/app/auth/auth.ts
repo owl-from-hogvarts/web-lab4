@@ -12,3 +12,7 @@ export function setUserToken(token: string) {
 export default function getUserToken() {
   return userToken
 }
+
+export function isAuthorized() {
+  return userToken !== null
+}

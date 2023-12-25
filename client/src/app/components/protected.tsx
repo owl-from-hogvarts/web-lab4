@@ -1,14 +1,14 @@
-import React, { useEffect } from "react"
+import { isAuthorized } from "app/auth/auth";
+import React, { useContext, useEffect } from "react"
 import { redirect, useNavigate } from "react-router-dom";
 
 export type ProtectedRouteProps = React.PropsWithChildren<{}>
 
 export default function ProtectedRoute({children}: ProtectedRouteProps) {
   // const isAuthorized = useIsAuthorized()
-  const isAuthorized = false
   const nav = useNavigate()
 
-  if (!isAuthorized) {
+  if (!isAuthorized()) {
     useEffect(() => {
       nav("/login")
     })

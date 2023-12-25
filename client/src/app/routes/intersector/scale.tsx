@@ -10,7 +10,6 @@ const defaultScaleValue = 1
 
 export default function ({ scaleValues, currentScale = defaultScaleValue, onScaleChange = () => {}}: ScaleProps) {
   if (!(scaleValues.find((value) => value == currentScale))) {
-    console.log(currentScale)
     currentScale = defaultScaleValue
     onScaleChange(currentScale)
   }

@@ -6,6 +6,8 @@ import styled from "@emotion/styled";
 import { useSearchParams } from "react-router-dom";
 import { Controller, UseFormRegisterReturn, useForm } from "react-hook-form";
 import { colors } from "app/styles/colors";
+import api from "app/api/api";
+import { TScaledPoint, TPoint } from "app/api/point";
 
 const scaleValues = [1, 1.5, 2, 2.5, 3];
 
@@ -14,13 +16,6 @@ const Settings = styled.div`
   flex-direction: column;
   gap: 1rem;
 `;
-
-export type TPoint = {
-  pointX: number;
-  pointY: number;
-};
-
-export type TScaledPoint = TPoint & { scale: number };
 
 const defaultFormValues: TScaledPoint = {
   pointX: 0,
@@ -144,10 +139,7 @@ export default function IntersectorForm({
       <Button
         className="rounded"
         onClick={handleSubmit(async (data) => {
-          await fetch("/api/v1/points", {
-            method: "POST",
-            body: JSON.stringify(data),
-          });
+          await api.post("/points", null, {params: data})
 
           onPointAdd(data);
           onScaleSet(getValues("scale"));

@@ -45,34 +45,16 @@
       <version>10.0.0</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.hibernate.orm</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>6.4.1.Final</version>
+    </dependency>
     <!-- <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core-jakarta</artifactId>
       <version>5.6.15.Final</version>
     </dependency> -->
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-core</artifactId>
-      <version>6.1.7.Final</version>
-    </dependency>
-    <!-- <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager</artifactId>
-      <version>5.6.15.Final</version>
-    </dependency> -->
-
-    <dependency>
-      <groupId>jakarta.enterprise</groupId>
-      <artifactId>jakarta.enterprise.cdi-api</artifactId>
-      <version>3.0.0</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>jakarta.ejb</groupId>
-      <artifactId>jakarta.ejb-api</artifactId>
-      <version>4.0.0</version>
-      <scope>provided</scope>
-    </dependency>
     <dependency>
       <groupId>jakarta.json.bind</groupId>
       <artifactId>jakarta.json.bind-api</artifactId>
@@ -86,21 +68,20 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>jakarta.ws.rs</groupId>
-      <artifactId>jakarta.ws.rs-api</artifactId>
-      <version>3.0.0</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>jakarta.servlet</groupId>
-      <artifactId>jakarta.servlet-api</artifactId>
-      <version>5.0.0</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>42.5.4</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.persistence</groupId>
+      <artifactId>jakarta.persistence-api</artifactId>
+      <version>3.1.0</version>
     </dependency>
   </dependencies>
 
@@ -111,12 +92,81 @@
       <plugin>
         <groupId>org.wildfly.plugins</groupId>
         <artifactId>wildfly-maven-plugin</artifactId>
-        <version>4.2.0.Final</version>
+        <version>4.2.2.Final</version>
         <configuration>
           <server-args>
             <server-arg>-Djboss.http.port=17025</server-arg>
           </server-args>
         </configuration>
+        <executions>
+          <execution>
+            <id>deploy-postgresql</id>
+            <phase>package</phase>
+            <goals>
+              <goal>deploy-artifact</goal>
+            </goals>
+            <configuration>
+              <groupId>org.postgresql</groupId>
+              <artifactId>postgresql</artifactId>
+              <name>postgresql.jar</name>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-datasource</id>
+            <phase>install</phase>
+            <goals>
+              <goal>add-resource</goal>
+            </goals>
+            <configuration>
+              <address>subsystem=datasources</address>
+              <resources>
+                <resource>
+                  <address>xa-data-source=java:jboss/datasources/postgresDS</address>
+                  <properties>
+                    <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
+                    <jndi-name>java:jboss/datasources/postgresDS</jndi-name>
+                    <enabled>true</enabled>
+                    <driver-name>postgresql.jar</driver-name>
+                  </properties>
+                  <resources>
+                    <resource>
+                      <address>
+                        xa-datasource-properties=DatabaseName
+                      </address>
+                      <properties>
+                        <value>studs</value>
+                      </properties>
+                    </resource>
+                    <resource>
+                      <address>
+                        xa-datasource-properties=ServerName
+                      </address>
+                      <properties>
+                        <value>localhost</value>
+                      </properties>
+                    </resource>
+                    <resource>
+                      <address>
+                        xa-datasource-properties=User
+                      </address>
+                      <properties>
+                        <value>***database-username***</value>
+                      </properties>
+                    </resource>
+                    <resource>
+                      <address>
+                        xa-datasource-properties=Password
+                      </address>
+                      <properties>
+                        <value>***database-password***</value>
+                      </properties>
+                    </resource>
+                  </resources>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to
@@ -155,7 +205,7 @@
         <plugin>
           <groupId>org.wildfly.plugins</groupId>
           <artifactId>wildfly-maven-plugin</artifactId>
-          <version>4.2.0.Final</version>
+          <version>4.2.2.Final</version>
         </plugin>
       </plugins>
     </pluginManagement>

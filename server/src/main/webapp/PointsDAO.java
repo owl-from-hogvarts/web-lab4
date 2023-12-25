@@ -9,7 +9,7 @@ import jakarta.transaction.Transactional;
 
 @Stateless
 public class PointsDAO {
-    @PersistenceContext
+    @PersistenceContext(unitName = "app")
     private EntityManager db;
 
     @Transactional

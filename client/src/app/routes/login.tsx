@@ -7,6 +7,7 @@ import { Link, redirect, useLocation, useNavigate } from "react-router-dom";
 import { TLoginData, loginUser } from "app/api/users";
 import { REDIRECT_TO_PARAM_NAME } from "app/api/api";
 import getUserToken from "app/auth/auth";
+import Title from "app/components/title";
 
 export default function Login() {
   const location = useLocation();
@@ -33,6 +34,7 @@ export default function Login() {
 
   return (
     <LoginContainer>
+      <Title>Login</Title>
       <Field label="Login">
         <FieldInput
           required

@@ -54,7 +54,7 @@ export default function PointsTable({ points }: PointsTableProps) {
         </thead>
         <tbody>
           {points.map((point) => (
-            <Row point={point}></Row>
+            <Row point={point} key={point.id} ></Row>
           ))}
         </tbody>
       </ResultsTable>

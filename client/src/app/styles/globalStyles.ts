@@ -24,5 +24,12 @@ export const topElementStyles = css`
     font-size: 16px;
     width: 100%;
     background-color: ${colors.background};
+    height: 100%;
+  }
+
+  root {
+    display: flex;
+    flex-direction: column;
+    height: 100%
   }
 `;

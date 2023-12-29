@@ -7,6 +7,7 @@ import Login from "./routes/login";
 import Signin from "./routes/signin";
 import fonts from "./styles/fonts";
 import Root from "./Root";
+import ErrorDisplayer from "./routes/error";
 
 
 
@@ -14,7 +15,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-
     children: [
       {
         path: "",
@@ -28,6 +28,11 @@ const router = createBrowserRouter([
         path: "signin",
         element: <Signin />,
       },
+      {
+        path: "forbidden",
+        element: <ErrorDisplayer />
+      }
+    
     ],
   },
 ]);

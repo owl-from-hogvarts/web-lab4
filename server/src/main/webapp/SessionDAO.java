@@ -13,14 +13,18 @@ import jakarta.transaction.Transactional;
 
 @Stateless
 public class SessionDAO implements Serializable {
+  // value is embedded into sql query. be careful with syntax
+  private static final int SESSION_EXPIRATION_INTERVAL_SECONDS = 30;
+  
   @PersistenceContext
   private EntityManager db;
-  
+
   @Transactional
   public void save(Session session) {
     db.persist(session);
   }
 
+  // ! UNUSED !
   public List<Session> getSessionsForUser(String login) {
     final var builder = db.getCriteriaBuilder();
     final var query = builder.createQuery(Session.class);
@@ -40,7 +44,7 @@ public class SessionDAO implements Serializable {
       return false;
     }
 
-    final var isExpired = Duration.between(session.get().getCreatedAt(), Instant.now()).toSeconds() > 10;
+    final var isExpired = Duration.between(session.get().getCreatedAt(), Instant.now()).toSeconds() > SESSION_EXPIRATION_INTERVAL_SECONDS;
     if (isExpired) {
       final var deleteQuery = builder.createCriteriaDelete(Session.class);
       final var sessionRoot = deleteQuery.from(Session.class);
@@ -49,5 +53,17 @@ public class SessionDAO implements Serializable {
     }
 
     return !isExpired;
+  }
+
+  /**
+   * If database changes, update this!
+   * 
+   * Criteria api does not support comparison operations
+   * with dates. Using postgresql directly
+   */
+  public void cleanupExpiredSessions() {
+    // executed immediately
+    final var query = db.createNativeQuery("DELETE FROM session WHERE (CURRENT_TIMESTAMP - createdAt) > '" + SESSION_EXPIRATION_INTERVAL_SECONDS +"s';");
+    query.executeUpdate();
   }
 }

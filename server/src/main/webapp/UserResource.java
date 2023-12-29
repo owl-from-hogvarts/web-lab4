@@ -44,7 +44,6 @@ public class UserResource {
     }
 
     final boolean isPasswordValid = user.validatePassword(password);
-    System.out.println(isPasswordValid);
     if (!isPasswordValid) {
       throw new WrongPassword(login);
     }

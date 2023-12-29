@@ -105,8 +105,6 @@ public class UserEntity {
 
   public boolean validatePassword(String inputPassword) {
     final var inputPasswordHash = hashPassword(inputPassword, getSalt());
-    System.out.println(Arrays.toString(inputPasswordHash));
-    System.out.println(Arrays.toString(getPasswordHash()));
     return Arrays.equals(inputPasswordHash, getPasswordHash());
   }
 }

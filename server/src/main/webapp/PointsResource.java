@@ -45,8 +45,20 @@ public class PointsResource {
   }
 
   @GET
-  public Response getPoints() {
-    return Response.ok(points.getPoints()).build();
+  public Response getPoints(@QueryParam(PARAM_SCALE) String scaleStr, @QueryParam("page") String pageStr) throws InvalidValue {
+    double scale = 1.0;
+    int page = 1;
+    
+    if (scaleStr != null) { 
+      final double scaleApproximate = parseDoubleParam(PARAM_SCALE, scaleStr);
+      scale = getInSet(PARAM_SCALE, scaleApproximate, ALLOWED_SCALE_VALUES, SCALE_TOLERANCE);
+    }
+
+    if (pageStr != null) {
+      page = parseLongParam(scaleStr, pageStr);
+    }
+    
+    return Response.ok(points.getPoints(scale, page)).build();
   }
 
   @POST
@@ -118,6 +130,15 @@ public class PointsResource {
       // parse params
       return Double.parseDouble(value);
     } catch (NumberFormatException e) {
+      throw new InvalidValue(paramName);
+    }
+  }
+
+  private static int parseLongParam(String paramName, String value) throws InvalidValue {
+    try {
+      validateNumericString(paramName, value);
+      return Integer.parseInt(value);
+    } catch(NumberFormatException e) {
       throw new InvalidValue(paramName);
     }
   }

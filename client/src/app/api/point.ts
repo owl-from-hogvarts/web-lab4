@@ -1,7 +1,7 @@
 import { toPreciseString } from "utils/point";
 import api from "./api";
 
-const API_POINTS = "/points"
+const POINTS_ENDPOINT = "/points"
 
 export type TPoint = {
   pointX: number;
@@ -16,13 +16,17 @@ export type PointCheckResult = {
   calculationTime: number;
 } & TScaledPoint;
 
-export async function getPoints(): Promise<PointCheckResult[]> {
-  const response = await api.get(API_POINTS);
+export async function getPoints(scale?: TScaledPoint["scale"]): Promise<PointCheckResult[]> {
+  const response = await api.get(POINTS_ENDPOINT, {
+    params: {
+      scale
+    }
+  });
   return response.data.ArrayList;
 }
 
 export async function addPoint(point: TScaledPoint) {
-  await api.post(API_POINTS, null, {
+  await api.post(POINTS_ENDPOINT, null, {
     params: {
       pointX: toPreciseString(point.pointX),
       pointY: toPreciseString(point.pointY),

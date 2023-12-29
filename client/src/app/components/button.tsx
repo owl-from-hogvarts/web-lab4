@@ -11,6 +11,7 @@ const Button = styled.div`
   transition: background-color 0.2s;
   display: flex;
   justify-content: center;
+  align-items: center;
 
   &:hover {
     cursor: pointer;

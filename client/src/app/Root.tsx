@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import Header from './routes/header';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { setupInterceptors } from './api/api';
+import { LogoutButton } from './components/logoutButton';
 
 const Main = styled.div`
   display: flex;
@@ -11,6 +12,7 @@ const Main = styled.div`
   align-items: center;
   gap: 1rem;
   padding: 2rem 0.5rem;
+  height: 100%;
 `;
 
 export default function Root() {
@@ -23,7 +25,7 @@ export default function Root() {
         name={{ first: "Костя", last: "Тернавский" }}
         group="P3206"
         variant={1910}
-      />
+      ><LogoutButton/></Header>
       <Main>
         <Outlet />
       </Main>

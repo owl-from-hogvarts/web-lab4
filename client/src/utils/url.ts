@@ -11,23 +11,25 @@ export function mergeQueryParams(initialParams: URLSearchParams, updatedParams: 
   for (const [key, value] of updatedParams) {
     initialParams.set(key, value)
   }
+
+  return initialParams
 }
+
+export function NaNToUndefined(
+  possibleNaN: string | number | undefined | null
+): number | undefined {
+  if (possibleNaN === "" || possibleNaN === undefined || possibleNaN === null) {
+    return;
+  }
+
+  const parse = Number(possibleNaN);
+  return isNaN(parse) ? undefined : parse;
+}
+
 
 export const url = new URL(document.URL)
 
-
-const API_ORIGIN = url.origin
-const API_BASE = ""
-const API_INTERSECT_ENDPOINT = "/app"
-const API_ACCESS_PARAM = "isJson"
 export const INVALID_DATA_ERROR_CODE = 422
-
-export function buildEndpointUrl() {
-  const url = new URL(API_BASE + API_INTERSECT_ENDPOINT, API_ORIGIN)
-  url.searchParams.set(API_ACCESS_PARAM, "")
-
-  return url
-}
 
 const apiErrorMessages: {[key: number]: string} = {
   [INVALID_DATA_ERROR_CODE]: "Invalid data! Check input"

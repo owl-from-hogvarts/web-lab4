@@ -5,9 +5,9 @@ import Button from "app/components/button";
 import styled from "@emotion/styled";
 import { useSearchParams } from "react-router-dom";
 import { Controller, UseFormRegisterReturn, useForm } from "react-hook-form";
-import { colors } from "app/styles/colors";
 import api from "app/api/api";
 import { TScaledPoint, TPoint } from "app/api/point";
+import { NaNToUndefined, mergeQueryParams } from "utils/url";
 
 const scaleValues = [1, 1.5, 2, 2.5, 3];
 
@@ -64,36 +64,44 @@ export default function IntersectorForm({
     mode: "onChange",
   });
 
-  useEffect(() => {
-    setQueryParams(getValues() as any);
-  }, []);
-
   // useSearchParams does not self default values by itself
   // need to explicitly call set for the first time
   useEffect(() => {
+    const newParams = mergeQueryParams(new URLSearchParams(window.location.search), new URLSearchParams(getValues() as any))
+    setQueryParams(newParams, {replace: true});
+    onScaleSet(getValues("scale"))
+  }, []);
+
+  useEffect(() => {
     const subscription = watch((data) => {
-      setQueryParams(data as any, { replace: true });
+      const newParams = mergeQueryParams(new URLSearchParams(window.location.search), new URLSearchParams(data as any))
+      setQueryParams(newParams, { replace: true });
     });
 
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  const pointXController = register("pointX", fieldConstraints)
+  const pointXController = register("pointX", fieldConstraints);
   const pointYController = register("pointY", fieldConstraints);
 
-  function createOnChange<T extends keyof TScaledPoint>(field: UseFormRegisterReturn<T>, name: keyof TScaledPoint) {
+  function createOnChange<T extends keyof TScaledPoint>(
+    field: UseFormRegisterReturn<T>,
+    name: keyof TScaledPoint
+) {
     return (event: React.ChangeEvent<HTMLInputElement>) => {
-      const value  = event.target.value.trim();
+      const value = event.target.value.trim();
 
-      if (value.length > 0 && value[0] !== "-" || value.length > 1) {
+      if ((value.length > 0 && value[0] !== "-") || value.length > 1) {
         if (value.length > 10) {
-          event.target.value = getValues(name).toString()
-          field.onChange(event)
+          event.target.value = getValues(name).toString();
+          field.onChange(event);
           return;
         }
 
         const num = +value;
-        event.target.value = (NaNToUndefined(num) ?? defaultFormValues.pointY).toString();
+        event.target.value = (
+          NaNToUndefined(num) ?? defaultFormValues.pointY
+        ).toString();
         field.onChange(event);
       }
     };
@@ -139,7 +147,7 @@ export default function IntersectorForm({
       <Button
         className="rounded"
         onClick={handleSubmit(async (data) => {
-          await api.post("/points", null, {params: data})
+          await api.post("/points", null, { params: data });
 
           onPointAdd(data);
           onScaleSet(getValues("scale"));
@@ -164,13 +172,3 @@ function parseQueryParams(params: URLSearchParams): Partial<TPoint> {
   return Object.fromEntries(nonUndefinedProperties);
 }
 
-function NaNToUndefined(
-  possibleNaN: string | number | undefined | null
-): number | undefined {
-  if (possibleNaN === "" || possibleNaN === undefined || possibleNaN === null) {
-    return;
-  }
-
-  const parse = Number(possibleNaN);
-  return isNaN(parse) ? undefined : parse;
-}

@@ -16,13 +16,24 @@ export type PointCheckResult = {
   calculationTime: number;
 } & TScaledPoint;
 
-export async function getPoints(scale?: TScaledPoint["scale"]): Promise<PointCheckResult[]> {
+export type TGetPointsParams = {
+  scale?: TScaledPoint["scale"]
+  page? : number
+}
+
+export type TGetPointsResponse = {
+  points: PointCheckResult[],
+  totalPages: number,
+}
+
+export async function getPoints({ scale, page }: TGetPointsParams): Promise<TGetPointsResponse> {
   const response = await api.get(POINTS_ENDPOINT, {
     params: {
-      scale
-    }
+      scale,
+      page
+    },
   });
-  return response.data.ArrayList;
+  return response.data.response;
 }
 
 export async function addPoint(point: TScaledPoint) {

@@ -1,14 +1,12 @@
 package webapp;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.annotation.Nullable;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -16,6 +14,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import webapp.errors.InvalidPage;
 import webapp.errors.InvalidValue;
 import webapp.errors.ParamNotFound;
 import webapp.errors.ParamValueNotProvided;
@@ -45,11 +44,12 @@ public class PointsResource {
   }
 
   @GET
-  public Response getPoints(@QueryParam(PARAM_SCALE) String scaleStr, @QueryParam("page") String pageStr) throws InvalidValue {
+  public Response getPoints(@QueryParam(PARAM_SCALE) String scaleStr, @QueryParam("page") String pageStr)
+      throws InvalidValue, InvalidPage {
     double scale = 1.0;
     int page = 1;
-    
-    if (scaleStr != null) { 
+
+    if (scaleStr != null) {
       final double scaleApproximate = parseDoubleParam(PARAM_SCALE, scaleStr);
       scale = getInSet(PARAM_SCALE, scaleApproximate, ALLOWED_SCALE_VALUES, SCALE_TOLERANCE);
     }
@@ -57,12 +57,13 @@ public class PointsResource {
     if (pageStr != null) {
       page = parseLongParam(scaleStr, pageStr);
     }
-    
+
     return Response.ok(points.getPoints(scale, page)).build();
   }
 
   @POST
-  public Response addPointsWrapper(@QueryParam(PARAM_POINT_X) String paramPointX, @QueryParam(PARAM_POINT_Y) String paramPointY,
+  public Response addPointsWrapper(@QueryParam(PARAM_POINT_X) String paramPointX,
+      @QueryParam(PARAM_POINT_Y) String paramPointY,
       @QueryParam(PARAM_SCALE) String paramScale) throws IOException {
     try {
       return addPoints(paramPointX, paramPointY, paramScale);
@@ -71,7 +72,8 @@ public class PointsResource {
     }
   }
 
-  private Response addPoints(String paramPointX, String paramPointY, String paramScale) throws IOException, ParamNotFound, ParamValueNotProvided, InvalidValue {
+  private Response addPoints(String paramPointX, String paramPointY, String paramScale)
+      throws IOException, ParamNotFound, ParamValueNotProvided, InvalidValue {
     final var start = System.nanoTime();
 
     final String strPointX = requiredParam(PARAM_POINT_X, paramPointX);
@@ -99,7 +101,7 @@ public class PointsResource {
     areaData.setCalculationTime(duration / 1_000);
     areaData.setIntersects(isIntersects);
     points.save(areaData);
-    
+
     return Response.ok().build();
   }
 
@@ -138,7 +140,7 @@ public class PointsResource {
     try {
       validateNumericString(paramName, value);
       return Integer.parseInt(value);
-    } catch(NumberFormatException e) {
+    } catch (NumberFormatException e) {
       throw new InvalidValue(paramName);
     }
   }

@@ -14,7 +14,7 @@ import jakarta.transaction.Transactional;
 @Stateless
 public class SessionDAO implements Serializable {
   // value is embedded into sql query. be careful with syntax
-  private static final int SESSION_EXPIRATION_INTERVAL_SECONDS = 30;
+  private static final int SESSION_EXPIRATION_INTERVAL_SECONDS = 30 * 60;
   
   @PersistenceContext
   private EntityManager db;

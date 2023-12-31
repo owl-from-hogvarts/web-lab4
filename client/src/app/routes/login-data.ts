@@ -1,6 +1,6 @@
 import emotionStyled from "@emotion/styled";
 
-export const LoginContainer = emotionStyled.div`
+export const LoginContainer = emotionStyled.form`
   width: 40%;
   display: flex;
   flex-direction: column;

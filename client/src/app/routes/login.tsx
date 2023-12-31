@@ -9,6 +9,8 @@ import { REDIRECT_TO_PARAM_NAME } from "app/api/api";
 import getUserToken from "app/auth/auth";
 import Title from "app/components/title";
 
+const SubmitButton = Button.withComponent("input")
+
 export default function Login() {
   const location = useLocation();
   const navigateTo = useNavigate();
@@ -53,8 +55,10 @@ export default function Login() {
         />
       </Field>
       <Link to="/signin">Do not have an account yet? Register now</Link>
-      <Button
+      <SubmitButton
         className="rounded"
+        type="submit"
+        value="Login"
         style={{ width: "100%" }}
         onClick={handleSubmit(async (data) => {
           if (isValid && isDirty) {
@@ -70,9 +74,7 @@ export default function Login() {
             navigateTo(decodeURI(to));
           }
         })}
-      >
-        Login
-      </Button>
+      />
     </LoginContainer>
   );
 }

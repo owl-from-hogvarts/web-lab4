@@ -54,7 +54,6 @@ export default function IntersectorForm({
   // if invalid value is found, fallback to absolute defaults
   const {
     register,
-    control,
     handleSubmit,
     watch,
     getValues,
@@ -67,25 +66,14 @@ export default function IntersectorForm({
 
   // useSearchParams does not self default values by itself
   // need to explicitly call set for the first time
+  const values = watch(["pointX", "pointY"])
   useEffect(() => {
     const newParams = mergeQueryParams(
       new URLSearchParams(window.location.search),
       new URLSearchParams(getValues() as any)
     );
     setQueryParams(newParams, { replace: true });
-  }, []);
-
-  useEffect(() => {
-    const subscription = watch((data) => {
-      const newParams = mergeQueryParams(
-        new URLSearchParams(window.location.search),
-        new URLSearchParams(data as any)
-      );
-      setQueryParams(newParams, { replace: true });
-    });
-
-    return () => subscription.unsubscribe();
-  }, [watch]);
+  }, [...values]);
 
   const pointXController = register("pointX", fieldConstraints);
   const pointYController = register("pointY", fieldConstraints);

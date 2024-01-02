@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Plot from "./plot";
 import IntersectorForm from "./intersector-form";
 import PointsTable from "./table";
@@ -49,16 +49,14 @@ export default function Intersector() {
   });
 
   const scale = watch("scale");
-  // useEffect(() => {}, [scale])
 
   useEffect(() => {
-    const subscription = watch((data) => {
-      const newParams = mergeQueryParams(
-        new URLSearchParams(window.location.search),
-        new URLSearchParams(data as any)
-      );
+    const newParams = mergeQueryParams(
+      new URLSearchParams(window.location.search),
+      new URLSearchParams({ scale } as any)
+    );
 
-      setParams(newParams);
+    setParams(newParams);
   }, [scale])
 
   useEffect(() => {
@@ -66,13 +64,7 @@ export default function Intersector() {
     // so updates of pages and scale are grouped.
     // So they cause refreshPoints to run only once
     // per two dependencies change
-    const subscription = watch((data) => {
-      const newParams = mergeQueryParams(
-        new URLSearchParams(window.location.search),
-        new URLSearchParams(data as any)
-      );
-
-      setParams(newParams);
+    const subscription = watch((_) => {
       setPage(DEFAULT_PAGE);
     });
     return () => subscription.unsubscribe();

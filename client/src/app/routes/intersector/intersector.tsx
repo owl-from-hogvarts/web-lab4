@@ -1,44 +1,98 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Plot from "./plot";
 import IntersectorForm from "./intersector-form";
 import PointsTable from "./table";
 import {
   PointCheckResult,
+  TScale,
   TScaledPoint,
   addPoint,
   getPoints,
 } from "app/api/point";
 import Pager from "./pager";
 import usePages from "app/hooks/usePages";
+import { Controller, useForm } from "react-hook-form";
+import {
+  NaNToUndefined,
+  mergeQueryParams,
+  nonUndefinedProperties,
+} from "utils/url";
+import { useSearchParams } from "react-router-dom";
 
 type TRefreshPointsConfig = {
-  scale?: TScaledPoint["scale"], 
-  page?: number
-}
+  scale?: TScaledPoint["scale"];
+  page?: number;
+};
 
-const DEFAULT_PAGE = 1
+const DEFAULT_PAGE = 1;
+
+type TFormFields = TScale;
+const defaultFormValues: TFormFields = {
+  scale: 1,
+};
 
 export default function Intersector() {
   const [points, setPoints] = useState([] as PointCheckResult[]);
-  const [scale, setScale] = useState(1);
+  const [params, setParams] = useSearchParams();
 
-  const {page, totalPages, setPages, setTotalPages} = usePages({
+  const { control, watch } = useForm<TFormFields>({
+    mode: "onChange",
+    defaultValues: {
+      ...defaultFormValues,
+      ...nonUndefinedProperties({ scale: NaNToUndefined(params.get("scale")) }),
+    },
+  });
+
+  const { page, totalPages, setPage, setTotalPages } = usePages({
     defaultPage: DEFAULT_PAGE,
-    paramName: true
-  })
+    paramName: true,
+  });
+
+  const scale = watch("scale");
+  // useEffect(() => {}, [scale])
 
   useEffect(() => {
-    refreshPoints({scale, page});
+    const subscription = watch((data) => {
+      const newParams = mergeQueryParams(
+        new URLSearchParams(window.location.search),
+        new URLSearchParams(data as any)
+      );
+
+      setParams(newParams);
+  }, [scale])
+
+  useEffect(() => {
+    // watch runs in the same react-render cycle
+    // so updates of pages and scale are grouped.
+    // So they cause refreshPoints to run only once
+    // per two dependencies change
+    const subscription = watch((data) => {
+      const newParams = mergeQueryParams(
+        new URLSearchParams(window.location.search),
+        new URLSearchParams(data as any)
+      );
+
+      setParams(newParams);
+      setPage(DEFAULT_PAGE);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
+  // on scale change reset page
+  // on initial scale set, leave page as is
+
+  useEffect(() => {
+    refreshPoints({ scale, page });
   }, [scale, page]);
 
-  async function refreshPoints({scale, page}: TRefreshPointsConfig = {}) {
-    try {
-      const response = await getPoints({ scale, page })
-      setPoints(response.points);
-      setTotalPages(response.totalPages)
-    } catch (error) {
-      setPages(DEFAULT_PAGE)
-    }
+  async function refreshPoints({ scale, page }: TRefreshPointsConfig = {}) {
+    // try {
+    const response = await getPoints({ scale, page });
+    setPoints(response.points);
+    setTotalPages(response.totalPages);
+    // } catch (error) {
+    //   setPage(DEFAULT_PAGE)
+    // }
   }
 
   return (
@@ -48,19 +102,21 @@ export default function Intersector() {
         scale={scale}
         onPointAdd={async (point) => {
           await addPoint({ ...point, scale });
-          refreshPoints({scale, page});
+          refreshPoints({ scale, page });
         }}
       />
-      <IntersectorForm
-        onPointAdd={() => refreshPoints({scale, page})}
-        scale={scale}
-        onScaleSet={(scale) => setScale(scale)}
+      <Controller
+        control={control}
+        name="scale"
+        render={({ field }) => (
+          <IntersectorForm
+            onPointAdd={() => refreshPoints({ scale, page })}
+            scale={field.value}
+            onScaleSet={(event) => field.onChange(event)}
+          />
+        )}
       />
-      <Pager
-        totalPages={totalPages}
-        page={page}
-        onPageChange={setPages}
-        />
+      <Pager totalPages={totalPages} page={page} onPageChange={setPage} />
       <PointsTable points={points} />
     </>
   );

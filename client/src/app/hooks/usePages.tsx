@@ -90,7 +90,7 @@ export default function usePages(
 
   return {
     ...state,
-    setPages: (page: number) => dispatch({ type: "setPage", page }),
+    setPage: (page: number) => dispatch({ type: "setPage", page }),
     setTotalPages: (totalPages: number) =>
       dispatch({ type: "setTotalPages", totalPages }),
   };

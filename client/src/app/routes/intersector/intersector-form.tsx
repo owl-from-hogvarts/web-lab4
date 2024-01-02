@@ -7,7 +7,7 @@ import { useSearchParams } from "react-router-dom";
 import { Controller, UseFormRegisterReturn, useForm } from "react-hook-form";
 import api from "app/api/api";
 import { TScaledPoint, TPoint } from "app/api/point";
-import { NaNToUndefined, mergeQueryParams } from "utils/url";
+import { NaNToUndefined, mergeQueryParams, nonUndefinedProperties } from "utils/url";
 
 const scaleValues = [1, 1.5, 2, 2.5, 3];
 
@@ -17,10 +17,11 @@ const Settings = styled.div`
   gap: 1rem;
 `;
 
-const defaultFormValues: TScaledPoint = {
+type TFormFields = TPoint;
+
+const defaultFormValues: TFormFields = {
   pointX: 0,
   pointY: 0,
-  scale: 1,
 };
 
 const maxInputLength = 10;
@@ -58,7 +59,7 @@ export default function IntersectorForm({
     watch,
     getValues,
     formState: { errors },
-  } = useForm<TScaledPoint>({
+  } = useForm<TFormFields>({
     // defaultValues: defaultFormValues,
     defaultValues: { ...defaultFormValues, ...parseQueryParams(queryParams) },
     mode: "onChange",
@@ -67,14 +68,19 @@ export default function IntersectorForm({
   // useSearchParams does not self default values by itself
   // need to explicitly call set for the first time
   useEffect(() => {
-    const newParams = mergeQueryParams(new URLSearchParams(window.location.search), new URLSearchParams(getValues() as any))
-    setQueryParams(newParams, {replace: true});
-    onScaleSet(getValues("scale"))
+    const newParams = mergeQueryParams(
+      new URLSearchParams(window.location.search),
+      new URLSearchParams(getValues() as any)
+    );
+    setQueryParams(newParams, { replace: true });
   }, []);
 
   useEffect(() => {
     const subscription = watch((data) => {
-      const newParams = mergeQueryParams(new URLSearchParams(window.location.search), new URLSearchParams(data as any))
+      const newParams = mergeQueryParams(
+        new URLSearchParams(window.location.search),
+        new URLSearchParams(data as any)
+      );
       setQueryParams(newParams, { replace: true });
     });
 
@@ -84,10 +90,10 @@ export default function IntersectorForm({
   const pointXController = register("pointX", fieldConstraints);
   const pointYController = register("pointY", fieldConstraints);
 
-  function createOnChange<T extends keyof TScaledPoint>(
+  function createOnChange<T extends keyof TFormFields>(
     field: UseFormRegisterReturn<T>,
-    name: keyof TScaledPoint
-) {
+    name: keyof TFormFields
+  ) {
     return (event: React.ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value.trim();
 
@@ -128,29 +134,20 @@ export default function IntersectorForm({
         />
       </Field>
       <Field label="Scale">
-        <Controller
-          name="scale"
-          control={control}
-          defaultValue={scale}
-          render={({ field }) => (
-            <Scale
-              scaleValues={scaleValues}
-              currentScale={field.value}
-              onScaleChange={(event) => {
-                field.onChange(event);
-                onScaleSet(event);
-              }}
-            />
-          )}
+        <Scale
+          scaleValues={scaleValues}
+          currentScale={scale}
+          onScaleChange={(event) => {
+            onScaleSet(event);
+          }}
         />
       </Field>
       <Button
         className="rounded"
         onClick={handleSubmit(async (data) => {
-          await api.post("/points", null, { params: data });
+          await api.post("/points", null, { params: {...data, scale} });
 
           onPointAdd(data);
-          onScaleSet(getValues("scale"));
         })}
       >
         Process!
@@ -159,16 +156,11 @@ export default function IntersectorForm({
   );
 }
 
-function parseQueryParams(params: URLSearchParams): Partial<TPoint> {
-  const parsed = {
+function parseQueryParams(params: URLSearchParams): Partial<TFormFields> {
+  const parsed: Partial<TFormFields> = {
     pointX: NaNToUndefined(params.get("pointX")),
     pointY: NaNToUndefined(params.get("pointY")),
-    scale: NaNToUndefined(params.get("scale")),
   };
 
-  const nonUndefinedProperties = Object.entries(parsed).filter(
-    ([_, v]) => v !== undefined
-  );
-  return Object.fromEntries(nonUndefinedProperties);
+  return nonUndefinedProperties(parsed);
 }
-

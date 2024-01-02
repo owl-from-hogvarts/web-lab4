@@ -8,7 +8,9 @@ export type TPoint = {
   pointY: number;
 };
 
-export type TScaledPoint = TPoint & { scale: number };
+export type TScale = { scale: number }
+
+export type TScaledPoint = TPoint & TScale;
 export type PointCheckResult = {
   id: string;
   isIntersects: boolean;

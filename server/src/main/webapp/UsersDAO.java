@@ -4,8 +4,10 @@ import java.io.Serializable;
 
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import webapp.errors.UserNotFound;
 
 @Stateless
 public class UsersDAO implements Serializable {
@@ -18,11 +20,15 @@ public class UsersDAO implements Serializable {
   }
 
   @Transactional
-  public UserEntity getUser(String login) {
+  public UserEntity getUser(String login) throws UserNotFound {
     final var queryBuilder = db.getCriteriaBuilder();
     final var query = queryBuilder.createQuery(UserEntity.class);
     final var root = query.from(UserEntity.class);
     query.select(root).where(queryBuilder.equal(root.get("login"), login));
-    return db.createQuery(query).getSingleResult();
+    try {
+      return db.createQuery(query).getSingleResult();
+    } catch (NoResultException e) {
+      throw new UserNotFound(login);
+    }
   }
 }

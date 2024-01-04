@@ -5,10 +5,10 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
 @Provider
-public class ErrorMapper implements ExceptionMapper<ParamException> {
+public class KnownErrorMapper implements ExceptionMapper<JsonError> {
 
   @Override
-  public Response toResponse(ParamException exception) {
+  public Response toResponse(JsonError exception) {
     return Response.ok(exception).status(422).build();
   }
   

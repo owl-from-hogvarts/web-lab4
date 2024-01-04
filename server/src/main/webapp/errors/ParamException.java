@@ -1,13 +1,9 @@
 package webapp.errors;
 
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
-import com.fasterxml.jackson.annotation.JsonRootName;
 
-import jakarta.ws.rs.WebApplicationException;
-
-@JsonIncludeProperties(value = {"paramName", "message"})
-@JsonRootName(value = "error")
-public abstract class ParamException extends WebApplicationException {
+@JsonIncludeProperties(value = {"paramName", "message", "errorType"})
+public abstract class ParamException extends JsonError {
   private final String paramName;
   public String getParamName() {
     return paramName;
@@ -24,5 +20,10 @@ public abstract class ParamException extends WebApplicationException {
   public ParamException(String paramName, String errorMessage) {
     super(errorMessage);
     this.paramName = paramName;
+  }
+
+  @Override
+  public String getErrorType() {
+    return super.getErrorType() + "params/";
   }
 }

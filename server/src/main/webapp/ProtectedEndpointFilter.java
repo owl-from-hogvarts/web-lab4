@@ -22,6 +22,10 @@ public class ProtectedEndpointFilter implements ContainerRequestFilter {
     final var params = requestContext.getUriInfo().getQueryParameters();
 
     if (params.containsKey(PARAM_NAME_USER_TOKEN)) {
+      // expect clients to always provide valid UUID
+      // if clients mess up with UUID, it is not our fault
+      // so it is acceptable to return unknown error
+      // Unknown error contains all necessary info to identify issue
       final var uuid = UUID.fromString(params.getFirst(PARAM_NAME_USER_TOKEN));
       if (sessions.validateSession(uuid)) {
         return;

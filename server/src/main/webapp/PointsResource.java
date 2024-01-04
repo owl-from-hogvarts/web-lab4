@@ -61,18 +61,11 @@ public class PointsResource {
     return Response.ok(points.getPoints(scale, page)).build();
   }
 
-  @POST
-  public Response addPointsWrapper(@QueryParam(PARAM_POINT_X) String paramPointX,
-      @QueryParam(PARAM_POINT_Y) String paramPointY,
-      @QueryParam(PARAM_SCALE) String paramScale) throws IOException {
-    try {
-      return addPoints(paramPointX, paramPointY, paramScale);
-    } catch (Exception e) {
-      return Response.status(501).entity(e).build();
-    }
-  }
 
-  private Response addPoints(String paramPointX, String paramPointY, String paramScale)
+  @POST
+  public Response addPoints(@QueryParam(PARAM_POINT_X) String paramPointX,
+      @QueryParam(PARAM_POINT_Y) String paramPointY,
+      @QueryParam(PARAM_SCALE) String paramScale)
       throws IOException, ParamNotFound, ParamValueNotProvided, InvalidValue {
     final var start = System.nanoTime();
 

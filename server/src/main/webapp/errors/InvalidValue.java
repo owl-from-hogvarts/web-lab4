@@ -9,5 +9,10 @@ public class InvalidValue extends ParamException {
   public InvalidValue(String paramName) {
     this(paramName, "Provided value is invalid!");
   }
+
+  @Override
+  public String getErrorType() {
+    return super.getErrorType() + "invalid-value/";
+  }
   
 }

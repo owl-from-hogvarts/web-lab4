@@ -13,7 +13,6 @@ public class DefaultErrorMapper implements ExceptionMapper<Exception> {
   private Providers providers;
 
   public Response toResponse(Exception exception) {
-    System.out.println(exception.toString());
     if (exception instanceof WebApplicationException) {
       // suggested by chat gpt
       // exception mapper injection with @Inject does not work

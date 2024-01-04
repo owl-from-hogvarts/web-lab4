@@ -2,11 +2,16 @@ package webapp;
 
 import java.io.Serializable;
 
+import org.hibernate.exception.ConstraintViolationException;
+
+import jakarta.ejb.EJBTransactionRolledbackException;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
+  import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional.TxType;
+import webapp.errors.UserAlreadyExists;
 import webapp.errors.UserNotFound;
 
 @Stateless
@@ -16,7 +21,7 @@ public class UsersDAO implements Serializable {
 
   @Transactional
   public void save(UserEntity user) {
-    db.persist(user);
+      db.persist(user);
   }
 
   @Transactional

@@ -1,9 +1,10 @@
-import styled from '@emotion/styled';
-import React, { useEffect } from 'react'
-import Header from './routes/header';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { setupInterceptors } from './api/api';
-import { LogoutButton } from './components/logoutButton';
+import styled from "@emotion/styled";
+import React, { useEffect, useState } from "react";
+import Header from "./routes/header";
+import { Outlet, useNavigate } from "react-router-dom";
+import { setupInterceptors } from "./api/api";
+import { LogoutButton } from "./components/logoutButton";
+import useGlobalErrors from "./hooks/useGlobalErrors";
 
 const Main = styled.div`
   display: flex;
@@ -16,19 +17,28 @@ const Main = styled.div`
 `;
 
 export default function Root() {
-  const nav = useNavigate()
-  useEffect(() => setupInterceptors(nav), [])
-  
+  const [isInterceptorReady, setReady] = useState(false);
+
+  const nav = useNavigate();
+  const { put } = useGlobalErrors();
+  useEffect(() => {
+    const cleanup = setupInterceptors(nav, put);
+    setReady(true)
+    return cleanup;
+  }, []);
+
   return (
     <>
       <Header
         name={{ first: "Костя", last: "Тернавский" }}
         group="P3206"
         variant={1910}
-      ><LogoutButton/></Header>
+      >
+        <LogoutButton />
+      </Header>
       <Main>
-        <Outlet />
+        {isInterceptorReady && <Outlet />}
       </Main>
     </>
-  )
+  );
 }

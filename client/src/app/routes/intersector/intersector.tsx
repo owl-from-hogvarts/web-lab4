@@ -18,6 +18,8 @@ import {
   nonUndefinedProperties,
 } from "utils/url";
 import { useSearchParams } from "react-router-dom";
+import { AxiosError } from "axios";
+import { TServerErrorPayload, isServerError } from "app/api/api";
 
 type TRefreshPointsConfig = {
   scale?: TScaledPoint["scale"];
@@ -57,7 +59,7 @@ export default function Intersector() {
     );
 
     setParams(newParams);
-  }, [scale])
+  }, [scale]);
 
   useEffect(() => {
     // watch runs in the same react-render cycle
@@ -78,13 +80,26 @@ export default function Intersector() {
   }, [scale, page]);
 
   async function refreshPoints({ scale, page }: TRefreshPointsConfig = {}) {
-    // try {
-    const response = await getPoints({ scale, page });
-    setPoints(response.points);
-    setTotalPages(response.totalPages);
-    // } catch (error) {
-    //   setPage(DEFAULT_PAGE)
-    // }
+    try {
+      const response = await getPoints({ scale, page });
+      setPoints(response.points);
+      setTotalPages(response.totalPages);
+    } catch (responseError) {
+      if (responseError instanceof AxiosError && isServerError(responseError)) {
+        const { error } = responseError.response!.data
+        const isParamError = error.errorType.startsWith("error/params")
+        if (!isParamError) {
+          throw error
+        }
+
+        const { paramName } = (error as TServerErrorPayload & {paramName: string})
+        if (paramName !== 'page') {
+          throw error
+        }
+
+        setPage(DEFAULT_PAGE);
+      }
+    }
   }
 
   return (

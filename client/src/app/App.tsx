@@ -13,6 +13,7 @@ import fonts from "./styles/fonts";
 import Root from "./Root";
 import ErrorBanner from "./routes/errors/error-banner";
 import { GlobalErrorProvider } from "./hooks/useGlobalErrors";
+import GlobalErrorsDisplayer from "./routes/errors/global-errors";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,7 @@ export default function App() {
         <Global styles={topElementStyles} />
         <Global styles={rounded} />
         <RouterProvider router={router} />
+        <GlobalErrorsDisplayer />
       </GlobalErrorProvider>
     </React.StrictMode>
   );

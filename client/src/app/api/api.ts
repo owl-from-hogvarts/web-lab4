@@ -11,6 +11,18 @@ const api = axios.create({
 const NOT_AUTHORIZED = 401;
 const FORBIDDEN = 403
 
+export type TServerError = {
+  /** Message to display in user interface */
+  message: string,
+  /** Client may have arbitrary logic depending on `errorType` */
+  errorType: string
+} | {
+  message: string,
+  errorType: "error/unknown",
+  /** Intended for developers */
+  details: string
+}
+
 export const REDIRECT_TO_PARAM_NAME = "to";
 
 export function setupInterceptors(navigateTo: NavigateFunction) {

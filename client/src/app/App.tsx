@@ -2,14 +2,17 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Intersector from "./routes/intersector/intersector";
 import { Global } from "@emotion/react";
-import { rounded, topElementStyles, globalDefaults } from "./styles/globalStyles";
-import Login from "./routes/login";
-import Signin from "./routes/signin";
+import {
+  rounded,
+  topElementStyles,
+  globalDefaults,
+} from "./styles/globalStyles";
+import Login from "./routes/auth/login";
+import Signin from "./routes/auth/signin";
 import fonts from "./styles/fonts";
 import Root from "./Root";
-import ErrorDisplayer from "./routes/error";
-
-
+import ErrorBanner from "./routes/errors/error-banner";
+import { GlobalErrorProvider } from "./hooks/useGlobalErrors";
 
 const router = createBrowserRouter([
   {
@@ -30,21 +33,22 @@ const router = createBrowserRouter([
       },
       {
         path: "forbidden",
-        element: <ErrorDisplayer />
-      }
-    
+        element: <ErrorBanner />,
+      },
     ],
   },
 ]);
 
-export default function App() {  
+export default function App() {
   return (
     <React.StrictMode>
-      <Global styles={fonts} />
-      <Global styles={globalDefaults} />
-      <Global styles={topElementStyles} />
-      <Global styles={rounded} />
+      <GlobalErrorProvider>
+        <Global styles={fonts} />
+        <Global styles={globalDefaults} />
+        <Global styles={topElementStyles} />
+        <Global styles={rounded} />
         <RouterProvider router={router} />
+      </GlobalErrorProvider>
     </React.StrictMode>
   );
 }

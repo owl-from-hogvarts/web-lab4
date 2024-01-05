@@ -14,7 +14,7 @@ const BannerContainer = styled.div`
   align-items: center;
 `;
 
-export default function ErrorDisplayer() {
+export default function ErrorBanner() {
   return (
     <BannerContainer>
       <Banner>Forbidden</Banner>
